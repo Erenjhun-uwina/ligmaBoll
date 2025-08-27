@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Azakana Proto</title>
+<style type="text/css">
+	*{
+		box-sizing:border-box;
+		margin:0;
+		padding:0;
+		background:#111;
+		overflow:hidden;
+	}
+</style>
+<!--CDN-->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/phaser-raycaster@0.10.2/dist/phaser-raycaster.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.55.2/phaser.min.js" integrity="sha512-kg6fSrg6FkD9Ua02PzuA289KatVkTp6HdiFrSKwnz1bKBeKe5JG54rNeYZeghYO/I4ka49rb9H/9Ezcq9Se3iQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/eruda/2.4.1/eruda.min.js" integrity="sha512-RrQDQUon0OiQVjKQYkMuhtLgx8R/4niagIVdHltxcAJa1+cc8FJFFOhtLuK3YJAoo5mdfAFh98ZQwbDKJgFIpg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script defer type="text/javascript">//eruda.init()</script>
+
+<script type="module" defer>
+	import Game from "./scenes/Game.sc.js"
+	import Menu from "./scenes/Menu.sc.js"
+	import GameUi from "./scenes/Game.ui.js"
+	
+	import ObjObserver from "./libs/ObjObserver.plugin.js"
+	import SoundFade from "./libs/SoundFade.plugin.js"
+	
+	const config = {
+		type: Phaser.WEBGL,
+		width:1420,
+		height:820,
+		
+		scale: {
+			mode: Phaser.Scale.FIT,
+			autoCenter: Phaser.Scale.CENTER_BOTH
+		},
+		backgroundColor:"#fff",
+		physics:{
+			default:'arcade',
+			arcade:{
+				debug:0
+			}
+		},
+		scene:[Menu,Game,GameUi],
+		plugins: {
+			scene: [
+			{
+				key: 'PhaserRaycaster',
+				plugin: PhaserRaycaster,
+				mapping: 'raycasterPlugin'
+			},
+			{
+				key: 'ObjObserver',
+				plugin: ObjObserver,
+				mapping: 'objObserver'
+			},
+			{
+				key: 'SoundFade',
+				plugin: SoundFade,
+				mapping: 'soundFade'
+			}
+		]
+		}
+	} 
+
+	let game = new Phaser.Game(config)
+	
+
+</script>
+</head>
+<body>
+	
+</body>
+</html>
