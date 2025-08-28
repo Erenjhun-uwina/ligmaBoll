@@ -1,6 +1,6 @@
 import Entity from "./Entity.js"
 
-const energy = 20
+const energy = 40
 
 
 export default class Orb extends Entity{

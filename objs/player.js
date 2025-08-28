@@ -52,7 +52,7 @@ export default class Player extends Entity{
 		this.jump_cost = 5
 		this.glide_cost = 6.5
 		
-		this.morph_duration = 30
+		this.morph_duration = 10
 		this.target_energy = this.mhp*0.95
 		
 		//attacks
