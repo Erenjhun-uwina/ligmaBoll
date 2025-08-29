@@ -100,20 +100,23 @@ export default class Game extends Phaser.Scene {
 		this.cam.setBounds(0, -height, width, height * 2)
 		this.cam.startFollow(player, true, 1, 1, (-width / 2) + 100, -(height / 2) + 200 + player.height * 2);
 
+		this.availableAbilities = [...upgrades.list];
 
-		let up1 = upgrades.get("diver")
-		upgrades.activate(player, up1)
+		// let up1 = upgrades.get("diver")
+		// upgrades.activate(player, up1)
+
+		// upgrades.activate(player, upgrades.get("diver"))
 
 
-		up1 = upgrades.get("glidder")
-		upgrades.activate(player, up1)
+		// up1 = upgrades.get("glidder")
+		// upgrades.activate(player, up1)
 
 
-		up1 = upgrades.get("sumo")
-		upgrades.activate(player, up1)
+		// up1 = upgrades.get("sumo")
+		// upgrades.activate(player, up1)
 
-		up1 = upgrades.get("hopper")
-		upgrades.activate(player, up1)
+		// up1 = upgrades.get("hopper")
+		// upgrades.activate(player, up1)
 
 
 		this.init_listeners()
@@ -135,10 +138,20 @@ export default class Game extends Phaser.Scene {
 
 		this.time.delayedCall(100, () => {
 			this.scene.get("GameUi").showFadingText(
-				"W / Tap LEFT screen to JUMP\nSPACE/Tap RIGHT screen to DIVE",
-				600, 1500, { fontSize: "60px", color: "#000" }
+				"W / Tap LEFT screen to JUMP",
+				600, 1500, { fontSize: "60px", color: "#000", fontFamily: "Arial, Verdana, sans-serif" }
 			);
 		});
+
+		this.time.delayedCall(2500, () => {
+			this.scene.get("GameUi").showFadingText(
+				"SPACE/Tap RIGHT screen to DIVE",
+				600, 1500, { fontSize: "60px", color: "#000", fontFamily: "Arial, Verdana, sans-serif" }
+			);
+		});
+
+
+
 	}
 
 
@@ -152,9 +165,13 @@ export default class Game extends Phaser.Scene {
 
 
 	init_listeners() {
+		this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O).
+			on("down", () => { player.emit("endmorph") });
 		const { player } = this
 		player.once("land", this.setup_cam, this)
-		player.on("endmorph", () => {/*todo*/ });
+		this.scene.get("GameUi").events.on("ability-selected", (abilty) => {
+			this.upgrades.activate(player, abilty)
+		})
 	}
 
 	setup_cam() {
