@@ -42,11 +42,11 @@ export default class Player extends Entity{
 		this.mhp = 100
 		this.hp = this.mhp
 		this.hp_regen = 3
-		this.regen_cost = 2
+		this.regen_cost = 1
 		
 		this.m_energy = 100
 		this.energy = this.m_energy*0.4
-		this.energy_regen = 3
+		this.energy_regen = 1
 		this.spd = 600
 		this.jump_h = -800
 		this.jump_cost = 5
@@ -181,8 +181,10 @@ export default class Player extends Entity{
 	regen(){
 		
 		if(this.isDead())return
+		
 		let net_g = this.energy_regen
-		net_g -= (this.will_glide?this.glide_cost:0)
+		net_g -= (this.will_glide?this.glide_cost:0) 
+		net_g *= this.morphing?0:1
 		this.setEnergy(this.energy + net_g)
 		
 		if(this.hp/this.mhp >=1)return
@@ -193,7 +195,7 @@ export default class Player extends Entity{
 	
 	morph(){
 		if(this.isDead())return
-		this.setEnergy(this.energy-60)
+		this.setEnergy(10)
 		this.morphing = false
 		this.emit("endmorph")
 	}
@@ -492,6 +494,7 @@ export default class Player extends Entity{
 		this.on("setEnergy",(d)=>{			
 			if(this.energy < this.target_energy || this.morphing)return
 			this.morphing = true
+			this.setEnergy(this.energy * 0.05)
 			this.emit("startmorph")
 		});
 		this.on("fall",()=>{this.die()});
