@@ -64,9 +64,10 @@ export  class Panel extends Ui{
 		setp(st,"align","center")
 		
 		const t= this.scene.add.text(x,y,txt,st)
-		.setFixedSize(this.width,this.height)
 		.setDepth(this.depth+1)
 		.setOrigin(0.5,0)	
+		
+
 		this.add(t)
 		
 		t._type = "txt"

@@ -42,38 +42,8 @@ export default class GameUi extends Phaser.Scene {
 
 
 	showFadingText(message, duration = 2000, delay = 3000, style = { fontSize: "32px", color: "#000000ff" }) {
-		const width = this.sys.game.canvas.width;
-		const height = this.sys.game.canvas.height;
-
-		// Create a new text object every time
-		const textObj = this.add.text(
-			width / 2,
-			height / 2 - 70,
-			message,
-			style
-		).setOrigin(0.5);
-
-		// Start fully transparent
-		textObj.setAlpha(0);
-
-		// Fade in
-		this.tweens.add({
-			targets: textObj,
-			alpha: 1,
-			duration: 400,
-			ease: "Power1",
-			onComplete: () => {
-				// Fade out after delay
-				this.tweens.add({
-					targets: textObj,
-					alpha: 0,
-					duration: duration,
-					delay: delay,
-					ease: "Power1",
-					onComplete: () => textObj.destroy()
-				});
-			}
-		});
+		const textObj = this.showText(message, style);
+		this.fadeInOut(textObj, duration, delay, true);
 	}
 
 
@@ -166,7 +136,7 @@ export default class GameUi extends Phaser.Scene {
 		gameover.addText(0, 50, `GAMEOVER`, { fontSize: "150px" })
 
 		gameover.setInteractive(true)
-		gameover.on("pointerdown", () => {this.restart_game()})
+		gameover.on("pointerdown", () => { this.restart_game() })
 
 
 	}
@@ -210,7 +180,7 @@ export default class GameUi extends Phaser.Scene {
 
 
 	restart_game() {
-		this.scene.get("GameUi").scene.restart();		
+		this.scene.get("GameUi").scene.restart();
 		game.scene.restart();
 	}
 
@@ -251,18 +221,18 @@ export default class GameUi extends Phaser.Scene {
 			})
 		});
 		///////////////////		
+
 		player.on("endmorph", () => {
+			console.log("morphinnnn!!")
 			if (player.isDead()) return
-			this.disp_upgrade()
+			this.showAbilityPanel(game.availableAbilities)
+			pause()
 			target_energy.update(player.target_energy / player.m_energy)
 		})
 
 	}
 
 
-	disp_upgrade() {
-		// this.pause(game)
-	}
 
 
 	disp_infos() {
@@ -297,6 +267,77 @@ export default class GameUi extends Phaser.Scene {
 		this.soundFade.fade(game.sounds.bg_chill, 500, 0.2)
 		this.scene.resume(sc)
 		if (morphTimer) morphTimer.paused = false
+	}
+
+	fadeInOut(target, duration = 2000, delay = 3000, destroyOnComplete = true) {
+		target.setAlpha(0);
+		this.tweens.add({
+			targets: target,
+			alpha: 1,
+			duration: 400,
+			ease: "Power1",
+			onComplete: () => {
+				this.tweens.add({
+					targets: target,
+					alpha: 0,
+					duration: duration,
+					delay: delay,
+					ease: "Power1",
+					onComplete: () => {
+						if (destroyOnComplete) target.destroy();
+					}
+				});
+			}
+		});
+	}
+
+	showText(message, style = { fontSize: "32px", color: "#000000ff" }, x = null, y = null, depth = 100) {
+		const width = this.sys.game.canvas.width;
+		const height = this.sys.game.canvas.height;
+		const textObj = this.add.text(
+			x ?? width / 2,
+			y ?? height / 2 - 70,
+			message,
+			style
+		).setOrigin(0.5);
+		textObj.setDepth(depth);
+		return textObj;
+	}
+
+	showAbilityPanel(availableAbilities) {
+
+		console.log(availableAbilities)
+		if (!availableAbilities || availableAbilities.length < 1) return;
+
+		console.log("youww?")
+		let scene = this
+		const width = this.sys.game.canvas.width;
+		const height = this.sys.game.canvas.height;
+
+		// Pick up to 3 random abilities from availableAbilities
+		const shuffled = availableAbilities.slice().sort(() => Math.random() - 0.5);
+		const choices = shuffled.slice(0, 3);
+
+		const panelSize = { w: width - 200, h: height - 200 };
+		const panel = new Panel(this, width / 2, 100, panelSize.w, panelSize.h);
+
+		choices.forEach((ability, i) => {
+			const btn = panel.addText(panel.width/3 * (i - 1), +25, ability.key, {
+				fontSize: "4rem",
+				maxWidth: "100px",
+				padding:{x:0,y:300},
+				color: "#fff",
+				backgroundColor: "#444",
+				fontFamily: "Arial, Verdana, sans-serif"
+			}).setInteractive({ useHandCursor: true })
+				.setFixedSize(panel.width/3 - 60, panel.height-50)
+				;
+
+			btn.on("pointerdown", () => {
+				scene.events.emit("ability-selected", ability);
+				panel.destroy();
+			});
+		});
 	}
 
 }
