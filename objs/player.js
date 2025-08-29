@@ -460,6 +460,7 @@ export default class Player extends Entity{
 				o.kill()
 				p.setEnergy(player.energy + o.energy)
 				p.setHp(player.hp + 5)
+				p.reset_c_jump()
 			});
 		
 		
