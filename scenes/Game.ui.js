@@ -225,7 +225,7 @@ export default class GameUi extends Phaser.Scene {
 		player.on("endmorph", () => {
 			console.log("morphinnnn!!")
 			if (player.isDead()) return
-			this.showAbilityPanel(game.availableAbilities)
+			this.showAbilityPanel(game.upgrades.list)
 			this.pause(game)
 			target_energy.update(player.target_energy / player.m_energy)
 		})
@@ -315,22 +315,45 @@ export default class GameUi extends Phaser.Scene {
 		const height = this.sys.game.canvas.height;
 
 		// Pick up to 3 random abilities from availableAbilities
-		const shuffled = availableAbilities.slice().sort(() => Math.random() - 0.5);
+		const shuffled = availableAbilities
+			.filter((ability) => {
+
+
+				if (ability.req == "none") {
+					console.log(ability.key, " [none]")
+					return true
+				}
+
+				let reqs = Array.isArray(ability.req) ? ability.req : [ability.req]
+				console.log(ability.key, reqs)
+
+				//check each req of this ability if it is still in availAbilities it means it is  not yet chosen so skip it
+				for (let req of reqs) {
+					console.log(req)
+					if (availableAbilities.includes(game.upgrades.get(req))) return false
+				}
+
+				return true
+			})
+			.sort(() => Math.random() - 0.5)
+
+
+
 		const choices = shuffled.slice(0, 3);
 
 		const panelSize = { w: width - 200, h: height - 200 };
 		const panel = new Panel(this, width / 2, 100, panelSize.w, panelSize.h);
 
 		choices.forEach((ability, i) => {
-			const btn = panel.addText(panel.width/3 * (i - 1), +25, ability.key, {
+			const btn = panel.addText(panel.width / 3 * (i - 1), +25, ability.key, {
 				fontSize: "4rem",
 				maxWidth: "100px",
-				padding:{x:0,y:300},
-				color: "#fff",
-				backgroundColor: "#444",
+				padding: { x: 0, y: 300 },
+				color: "#2e2e2eff",
+				backgroundColor: "#bebebeff",
 				fontFamily: "Arial, Verdana, sans-serif"
 			}).setInteractive({ useHandCursor: true })
-				.setFixedSize(panel.width/3 - 60, panel.height-50)
+				.setFixedSize(panel.width / 3 - 60, panel.height - 50)
 				;
 
 			btn.on("pointerdown", () => {

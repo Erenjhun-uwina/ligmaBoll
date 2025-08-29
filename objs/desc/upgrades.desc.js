@@ -1,6 +1,5 @@
 
 class Upgrade{
-	
 	constructor(key,desc,req = "none",func,cb){
 		this.key = key
 		this.desc = desc
@@ -8,13 +7,13 @@ class Upgrade{
 		this.cb = cb,
 		this.req = Array.isArray(req)?req:[req]
 		}
-}
+} 
 
 const {round,random} = Math
 
 
 export const upgrades = [
-	new Upgrade("giga","+20% mhp\n+30% size",["none"], 
+	new Upgrade("giga","+20% mhp\n+30% size","none", 
 		(target)=>{
 			target.mhp = round( target.mhp * 1.2)
 			target._setScale(target.scale*1.3)
@@ -36,7 +35,7 @@ export const upgrades = [
 			target.hp_regen *= 3
 			target.m_energy *= 1.2
 	}),
-	new Upgrade("diver","+5% mhp",["giga","hopper"],
+	new Upgrade("diver","+5% mhp","none",
 		(target,sys)=>{		
 			sys.addAtk(target,"dive")
 		}),
@@ -46,7 +45,7 @@ export const upgrades = [
 			sys.addAtk(target,"slam")
 		}),
 		
-	new Upgrade("sucker","+20% m_energy",["none"],
+	new Upgrade("sucker","+20% m_energy","none",
 		(target,sys)=>{		
 			sys.addAtk(target,"blast")
 		}),

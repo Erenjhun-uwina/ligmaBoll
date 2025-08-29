@@ -56,7 +56,6 @@ export default class UpgradeSystem{
 	}
 	
 	remove(key){
-		
 		const index = this.list.findIndex((e)=>e.key == key)
 		if(index == -1)return 
 		return this.list.splice(index,1)

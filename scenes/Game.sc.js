@@ -100,7 +100,6 @@ export default class Game extends Phaser.Scene {
 		this.cam.setBounds(0, -height, width, height * 2)
 		this.cam.startFollow(player, true, 1, 1, (-width / 2) + 100, -(height / 2) + 200 + player.height * 2);
 
-		this.availableAbilities = [...upgrades.list];
 
 		// let up1 = upgrades.get("diver")
 		// upgrades.activate(player, up1)
@@ -173,7 +172,6 @@ export default class Game extends Phaser.Scene {
 		this.scene.get("GameUi").events.on("ability-selected", (abilty) => {
 			this.upgrades.activate(player, abilty)
 			this.scene.resume(this)
-			this.availableAbilities.splice(this.availableAbilities.indexOf(abilty),1)
 		})
 	}
 
