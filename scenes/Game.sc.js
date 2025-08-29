@@ -169,8 +169,11 @@ export default class Game extends Phaser.Scene {
 			on("down", () => { player.emit("endmorph") });
 		const { player } = this
 		player.once("land", this.setup_cam, this)
+
 		this.scene.get("GameUi").events.on("ability-selected", (abilty) => {
 			this.upgrades.activate(player, abilty)
+			this.scene.resume(this)
+			this.availableAbilities.splice(this.availableAbilities.indexOf(abilty),1)
 		})
 	}
 

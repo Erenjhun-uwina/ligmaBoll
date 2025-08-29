@@ -226,7 +226,7 @@ export default class GameUi extends Phaser.Scene {
 			console.log("morphinnnn!!")
 			if (player.isDead()) return
 			this.showAbilityPanel(game.availableAbilities)
-			pause()
+			this.pause(game)
 			target_energy.update(player.target_energy / player.m_energy)
 		})
 
