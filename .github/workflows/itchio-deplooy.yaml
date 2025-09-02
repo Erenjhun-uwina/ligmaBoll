@@ -23,11 +23,9 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Upload to itch.io
-      uses: josephbmanley/itchio-upload-action@v1.5.0
+      uses: robpc/itchio-upload-action@v1
       with:
-        api_key: ${{ secrets.ITCHIO_API_KEY }}
-        game: ${{ env.ITCHIO_GAME }}
-        files: ${{ env.ITCHIO_FILES }}
-        channel: ${{ env.ITCHIO_CHANNEL }}
-        version: ${{ env.ITCHIO_VERSION }}
-        draft: ${{ env.ITCHIO_DRAFT }}
+        path: ./dist
+        project: genjunji/ligamabol-1
+        channel: windows
+        api-key: ${{ secrets.ITCHIO_API_KEY }}
