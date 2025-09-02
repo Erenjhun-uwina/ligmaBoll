@@ -1,0 +1,33 @@
+name: Itch.io Deploy Workflow
+
+env:
+  ITCHIO_API_KEY: ${{ secrets.ITCHIO_API_KEY }}
+  ITCHIO_GAME: genjunji.itch.io/ligamabol-1
+  ITCHIO_FILES: ./dist
+  ITCHIO_CHANNEL: windows
+  ITCHIO_DRAFT: false
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+    # Optionally, you can set other parameters like 'notes' or 'draft'
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Upload to itch.io
+      uses: josephbmanley/itchio-upload-action@v1.5.0
+      with:
+        api_key: ${{ secrets.ITCHIO_API_KEY }}
+        game: ${{ env.ITCHIO_GAME }}
+        files: ${{ env.ITCHIO_FILES }}
+        channel: ${{ env.ITCHIO_CHANNEL }}
+        version: ${{ env.ITCHIO_VERSION }}
+        draft: ${{ env.ITCHIO_DRAFT }}
