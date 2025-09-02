@@ -1,12 +1,4 @@
 name: Itch.io Deploy Workflow
-
-env:
-  ITCHIO_API_KEY: ${{ secrets.ITCHIO_API_KEY }}
-  ITCHIO_GAME: genjunji.itch.io/ligamabol-1
-  ITCHIO_FILES: .
-  ITCHIO_CHANNEL: windows
-  ITCHIO_DRAFT: false
-
 on:
   push:
     branches: [ "main" ]
@@ -25,7 +17,7 @@ jobs:
     - name: Upload to itch.io
       uses: robpc/itchio-upload-action@v1
       with:
-        path: ./dist
+        path: .
         project: genjunji/ligamabol-1
         channel: windows
         api-key: ${{ secrets.ITCHIO_API_KEY }}
