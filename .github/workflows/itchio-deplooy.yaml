@@ -3,7 +3,7 @@ name: Itch.io Deploy Workflow
 env:
   ITCHIO_API_KEY: ${{ secrets.ITCHIO_API_KEY }}
   ITCHIO_GAME: genjunji.itch.io/ligamabol-1
-  ITCHIO_FILES: ./dist
+  ITCHIO_FILES: .
   ITCHIO_CHANNEL: windows
   ITCHIO_DRAFT: false
 
